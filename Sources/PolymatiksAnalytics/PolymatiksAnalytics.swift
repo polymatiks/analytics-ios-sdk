@@ -17,12 +17,12 @@ public class PolymatiksAnalytics {
     private func configureFirebase() {
         if FirebaseApp.app() == nil {
             let options = FirebaseOptions(
-                googleAppID: ProcessInfo.processInfo.environment["POLYMATIKS_APP_ID"], // Replace with final Google App ID
-                gcmSenderID: ProcessInfo.processInfo.environment["POLYMATIKS_SENDER_ID"] // Replace with final GCM Sender ID
+                googleAppID: ProcessInfo.processInfo.environment["POLYMATIKS_APP_ID"] ?? "",
+                gcmSenderID: ProcessInfo.processInfo.environment["POLYMATIKS_SENDER_ID"] ?? ""
             )
-            options.apiKey = ProcessInfo.processInfo.environment["POLYMATIKS_EVENT_API_KEY"] // Replace with prod API Key
-            options.projectID = ProcessInfo.processInfo.environment["POLYMATIKS_PROJECT_ID"] // Replace with prod Firebase Project ID
-            options.bundleID = Bundle.main.bundleIdentifier ?? <#default value#> // Uses customer's bundle ID
+            options.apiKey = ProcessInfo.processInfo.environment["POLYMATIKS_EVENT_API_KEY"] ?? ""
+            options.projectID = ProcessInfo.processInfo.environment["POLYMATIKS_PROJECT_ID"] ?? ""
+            options.bundleID = Bundle.main.bundleIdentifier ?? "com.default.bundle"
 
             FirebaseApp.configure(options: options)
             print("✅ Firebase manually initialized for Bundle ID: \(options.bundleID)")
