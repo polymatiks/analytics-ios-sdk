@@ -108,6 +108,8 @@ analytics.viewProductPageEvent(product: [
     "price": 29.99
 ])
 ```
+> ℹ️ All events will automatically include the `customerId` and `cartId` values provided during initialization.  
+> You do **not** need to include them manually in your event parameters.
 
 ### Other Supported Events
 
