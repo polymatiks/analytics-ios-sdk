@@ -16,17 +16,32 @@ public class PolymatiksAnalytics {
 
     private func configureFirebase() {
         if FirebaseApp.app() == nil {
-            let options = FirebaseOptions(
-                googleAppID: ProcessInfo.processInfo.environment["POLYMATIKS_APP_ID"] ?? "",
-                gcmSenderID: ProcessInfo.processInfo.environment["POLYMATIKS_SENDER_ID"] ?? ""
-            )
-            options.apiKey = ProcessInfo.processInfo.environment["POLYMATIKS_EVENT_API_KEY"] ?? ""
-            options.projectID = ProcessInfo.processInfo.environment["POLYMATIKS_PROJECT_ID"] ?? ""
+            print("🔥 Configuring Firebase inside SDK...")
+
+            let appID = ProcessInfo.processInfo.environment["POLYMATIKS_APP_ID"] ?? ""
+            let senderID = ProcessInfo.processInfo.environment["POLYMATIKS_SENDER_ID"] ?? ""
+            let apiKey = ProcessInfo.processInfo.environment["POLYMATIKS_EVENT_API_KEY"] ?? ""
+            let projectID = ProcessInfo.processInfo.environment["POLYMATIKS_PROJECT_ID"] ?? ""
+
+            let options = FirebaseOptions(googleAppID: appID, gcmSenderID: senderID)
+            options.apiKey = apiKey
+            options.projectID = projectID
             options.bundleID = Bundle.main.bundleIdentifier ?? "com.default.bundle"
 
             FirebaseApp.configure(options: options)
-            print("✅ Firebase manually initialized for Bundle ID: \(options.bundleID)")
+            print("✅ Firebase manually initialized inside SDK for Bundle ID: \(options.bundleID)")
         }
+    }
+
+    public func logEvent(eventName: String, parameters: [String: Any]?) {
+        // Ensure Firebase is initialized before logging events
+        guard FirebaseApp.app() != nil else {
+            print("❌ Firebase is not initialized. Skipping event: \(eventName)")
+            return
+        }
+        
+        Analytics.logEvent(eventName, parameters: parameters)
+        print("✅ Logged event: \(eventName)")
     }
 
     public func viewProductPageEvent(product: [String: Any]) {
